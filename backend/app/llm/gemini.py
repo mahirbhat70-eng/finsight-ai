@@ -34,13 +34,14 @@ class GeminiProvider:
         self._client = genai.GenerativeModel(settings.llm_model)
 
     async def complete(self, prompt: str, *, system: str | None = None,
-                       temperature: float = 0.2, max_tokens: int = 4096) -> str:
+                       temperature: float = 0.2, max_tokens: int = 4096,
+                       json_mode: bool = False) -> str:
         started = time.monotonic()
 
         @with_retries
         async def _call() -> str:
             return await asyncio.to_thread(
-                self._generate, prompt, system, temperature, max_tokens, False)
+                self._generate, prompt, system, temperature, max_tokens, json_mode)
 
         text = await _call()
         record_llm_call(self.name, self.model, approx_tokens(prompt),
@@ -71,9 +72,17 @@ class GeminiProvider:
         attempt_prompt = full_prompt
         for attempt in (1, 2):
             raw = await self.complete(attempt_prompt, system=system,
-                                      temperature=temperature)
+                                      temperature=temperature, json_mode=True)
+            cleaned = raw.strip()
+            if cleaned.startswith("```"):
+                lines = cleaned.splitlines()
+                if lines and lines[0].startswith("```"):
+                    lines = lines[1:]
+                if lines and lines[-1].startswith("```"):
+                    lines = lines[:-1]
+                cleaned = "\n".join(lines).strip()
             try:
-                return schema.model_validate(json.loads(raw))
+                return schema.model_validate(json.loads(cleaned))
             except (json.JSONDecodeError, ValidationError) as exc:
                 logger.warning("gemini_json_retry", attempt=attempt, error=str(exc))
                 attempt_prompt = (

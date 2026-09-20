@@ -17,7 +17,14 @@ from app.rag.orchestrator import (
 )
 from app.rag.retrieval import RetrievedChunk
 
-FIXTURES = Path(__file__).resolve().parents[2] / "data" / "fixtures"
+def _find_fixtures() -> Path:
+    for parent in [Path(__file__).resolve()] + list(Path(__file__).resolve().parents):
+        cand = parent / "data" / "fixtures"
+        if (cand / "novatech_statements.json").exists():
+            return cand
+    return Path("/app/data/fixtures")
+
+FIXTURES = _find_fixtures()
 
 
 def _series() -> tuple[dict, list[str]]:

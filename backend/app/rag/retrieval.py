@@ -30,7 +30,7 @@ class RetrievedChunk:
 VECTOR_SQL = text("""
     SELECT id::text, filing_id::text, page_no, section, text
     FROM chunks
-    WHERE (:filing_id::uuid IS NULL OR filing_id = :filing_id::uuid)
+    WHERE (CAST(:filing_id AS uuid) IS NULL OR filing_id = CAST(:filing_id AS uuid))
     ORDER BY embedding <=> CAST(:qvec AS vector)
     LIMIT :k
 """)
@@ -39,7 +39,7 @@ LEXICAL_SQL = text("""
     SELECT id::text, filing_id::text, page_no, section, text,
            ts_rank(tsv, websearch_to_tsquery('english', :query)) AS rank
     FROM chunks
-    WHERE (:filing_id::uuid IS NULL OR filing_id = :filing_id::uuid)
+    WHERE (CAST(:filing_id AS uuid) IS NULL OR filing_id = CAST(:filing_id AS uuid))
       AND tsv @@ websearch_to_tsquery('english', :query)
     ORDER BY rank DESC
     LIMIT :k

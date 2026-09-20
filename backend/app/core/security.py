@@ -7,9 +7,9 @@ import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
+import bcrypt
 import jwt
 from fastapi import Depends, HTTPException, Request
-from passlib.hash import bcrypt
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -21,11 +21,17 @@ ALGORITHM = "HS256"
 
 
 def hash_password(password: str) -> str:
-    return bcrypt.hash(password)
+    pwd_bytes = password.encode("utf-8")[:72]
+    salt = bcrypt.gensalt()
+    return bcrypt.hashpw(pwd_bytes, salt).decode("utf-8")
 
 
 def verify_password(password: str, password_hash: str) -> bool:
-    return bcrypt.verify(password, password_hash)
+    try:
+        pwd_bytes = password.encode("utf-8")[:72]
+        return bcrypt.checkpw(pwd_bytes, password_hash.encode("utf-8"))
+    except Exception:
+        return False
 
 
 def create_access_token(user: User, minutes: int | None = None) -> str:

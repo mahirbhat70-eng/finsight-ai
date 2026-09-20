@@ -48,18 +48,21 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 
 async def init_models() -> None:
     """Dev shortcut: create_all (idempotent). Prefer Alembic in staging/prod."""
+    from sqlalchemy import text
     from app.models import Base  # noqa: F401 — imports the full metadata
 
     engine = get_engine()
     async with engine.begin() as conn:
+        await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
         await conn.run_sync(Base.metadata.create_all)
 
 
 async def dispose_engine() -> None:
-    global _engine
+    global _engine, _session_factory
     if _engine is not None:
         await _engine.dispose()
         _engine = None
+    _session_factory = None
 
 
 __all__ = ["get_engine", "get_session_factory", "get_db", "init_models",

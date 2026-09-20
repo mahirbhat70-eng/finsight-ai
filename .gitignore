@@ -8,22 +8,33 @@ venv/
 .pytest_cache/
 htmlcov/
 .coverage
+*.egg-info/
 
 # Env & secrets
 .env
+.env.prod
+.env*.local
 *.pem
+*.key
 
-# Data
+# Data & Exports
 data/uploads/
 data/exports/
+data/*.xlsx
+data/*.pdf
+!data/fixtures/**
 reports/
 
 # Node
 node_modules/
 .next/
 out/
+package-lock.json
 
-# OS / IDE
+# OS / IDE / Core dumps
 .DS_Store
 .idea/
 .vscode/
+core.*
+core
+neon.ts

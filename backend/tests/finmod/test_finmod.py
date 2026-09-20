@@ -27,7 +27,14 @@ from app.finmod.risk_rules import RuleEngine
 from app.finmod.scenarios import sensitivity_grid
 from app.finmod.wacc import AssumptionSet, compute_wacc
 
-FIXTURES = Path(__file__).resolve().parents[3] / "data" / "fixtures"
+def _find_fixtures() -> Path:
+    for parent in [Path(__file__).resolve()] + list(Path(__file__).resolve().parents):
+        cand = parent / "data" / "fixtures"
+        if (cand / "novatech_statements.json").exists():
+            return cand
+    return Path("/app/data/fixtures")
+
+FIXTURES = _find_fixtures()
 SERIES = json.loads((FIXTURES / "novatech_statements.json").read_text())
 PERIODS = SERIES["periods"]
 SER = SERIES["items"]

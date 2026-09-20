@@ -21,7 +21,14 @@ from novatech_model import build_model
 
 pytestmark = pytest.mark.integration
 
-FIXTURES = Path(__file__).resolve().parents[2] / "data" / "fixtures"
+def _find_fixtures() -> Path:
+    for parent in [Path(__file__).resolve()] + list(Path(__file__).resolve().parents):
+        cand = parent / "data" / "fixtures"
+        if (cand / "novatech_statements.json").exists():
+            return cand
+    return Path("/app/data/fixtures")
+
+FIXTURES = _find_fixtures()
 STMT_FOR_ITEM = {
     "revenue": "pl", "cogs": "pl", "gross_profit": "pl", "opex": "pl",
     "ebitda": "pl", "dna": "pl", "ebit": "pl", "interest_expense": "pl",

@@ -27,8 +27,13 @@ async def run_ingestion(ctx: dict, job_id: str) -> str:
         job.retry_count += 1
         await db.commit()
         try:
-            report = await run_pipeline(db, job.filing_id, job.id)
-            return report.state
+            if job.state == JobState.EMBEDDING:
+                from app.ingestion.pipeline import continue_after_review
+                await continue_after_review(db, job.filing_id, job.id)
+                return JobState.READY.value
+            else:
+                report = await run_pipeline(db, job.filing_id, job.id)
+                return report.state
         except Exception as exc:  # noqa: BLE001
             job = await db.get(IngestionJob, uuid.UUID(job_id))
             job.state = JobState.FAILED

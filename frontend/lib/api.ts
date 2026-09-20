@@ -81,6 +81,8 @@ export interface RiskFlag {
 export interface ReviewItem {
   item_id: string;
   company: string;
+  company_id: string;
+  filing_id: string;
   period: string;
   statement_type: string;
   canonical_key: string;
@@ -90,6 +92,20 @@ export interface ReviewItem {
   confidence: number;
   method: string;
   page_no: number | null;
+}
+
+export interface ReviewStats {
+  total: number;
+  unmapped: number;
+  high_confidence: number;
+  manual_required: number;
+}
+
+export interface BulkResult {
+  action: string;
+  approved: number;
+  rejected: number;
+  filings_resumed: string[];
 }
 
 export interface Citation {
@@ -156,12 +172,21 @@ export const api = {
     return fetch(`${API_BASE}/companies/${companyId}/filings`, {
       method: "POST",
       body: form,
-    }).then(json<{ filing_id: string; job_id: string }>());
+    }).then(json<{ filing_id: string; job_id: string }>);
   },
 
   job: (jobId: string) => fetch(`${API_BASE}/jobs/${jobId}`).then(json<JobState>),
 
   reviewQueue: () => fetch(`${API_BASE}/review/queue`).then(json<ReviewItem[]>),
+
+  reviewStats: () => fetch(`${API_BASE}/review/stats`).then(json<ReviewStats>),
+
+  reviewBulk: (action: string, threshold?: number, companyId?: string) =>
+    fetch(`${API_BASE}/review/bulk`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action, threshold: threshold ?? 0.7, company_id: companyId ?? null }),
+    }).then(json<BulkResult>),
 
   reviewItem: (itemId: string, decision: { approve: boolean; value?: number; canonical_key?: string }) =>
     fetch(`${API_BASE}/review/items/${itemId}`, {
@@ -175,7 +200,7 @@ export const api = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ company_id: companyId, question }),
-    }).then(json<CopilotPayload>()),
+    }).then(json<CopilotPayload>),
 
   filingFileUrl: (filingId: string) => `${API_BASE}/filings/${filingId}/file`,
 };

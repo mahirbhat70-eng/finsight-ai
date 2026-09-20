@@ -76,6 +76,7 @@ class ProgressReporter:
 async def run_pipeline(db: AsyncSession, filing_id: uuid.UUID,
                        job_id: uuid.UUID | None = None,
                        *, llm_assist: bool = True) -> PipelineReport:
+    import asyncio
     settings = get_settings()
     reporter = ProgressReporter(db, job_id)
     filing = await db.get(Filing, filing_id)
@@ -83,7 +84,8 @@ async def run_pipeline(db: AsyncSession, filing_id: uuid.UUID,
         raise ValueError(f"filing {filing_id} not found")
 
     await reporter.update(JobState.PARSING, 10, "parsing pages")
-    parsed = parse_pdf(filing.file_path)
+    # Parse in a thread so the async event loop is not blocked.
+    parsed = await asyncio.to_thread(parse_pdf, filing.file_path)
     filing.num_pages = len(parsed.pages)
 
     await reporter.update(JobState.EXTRACTING, 30,
@@ -99,13 +101,15 @@ async def run_pipeline(db: AsyncSession, filing_id: uuid.UUID,
             JobState.AWAITING_REVIEW, 70,
             f"{len(review)} items below {settings.confidence_review_threshold} "
             "confidence awaiting human review")
+        # Cache parsed doc in filing so _embed_stage can reuse it.
+        filing._parsed_cache = parsed  # transient attr — not persisted
         return PipelineReport(job_id=str(job_id) if job_id else "",
                               state=JobState.AWAITING_REVIEW.value,
                               items=len(mapped.items), review_items=len(review),
                               chunks=0, conflicts=mapped.conflicts,
                               unmapped=mapped.unmapped)
 
-    chunks = await _embed_stage(db, filing, reporter)
+    chunks = await _embed_stage(db, filing, reporter, parsed_doc=parsed)
     return PipelineReport(job_id=str(job_id) if job_id else "",
                           state=JobState.READY.value,
                           items=len(mapped.items), review_items=0,
@@ -116,17 +120,25 @@ async def run_pipeline(db: AsyncSession, filing_id: uuid.UUID,
 async def continue_after_review(db: AsyncSession, filing_id: uuid.UUID,
                                 job_id: uuid.UUID | None = None) -> int:
     """Called by the review API when all low-confidence items are approved."""
+    import asyncio
     reporter = ProgressReporter(db, job_id)
     filing = await db.get(Filing, filing_id)
-    chunks = await _embed_stage(db, filing, reporter)
+    # Reuse cached parse if available (same process lifetime); else re-parse.
+    parsed_doc = getattr(filing, "_parsed_cache", None)
+    if parsed_doc is None:
+        parsed_doc = await asyncio.to_thread(parse_pdf, filing.file_path)
+    chunks = await _embed_stage(db, filing, reporter, parsed_doc=parsed_doc)
     return chunks
 
 
 async def _embed_stage(db: AsyncSession, filing: Filing,
-                       reporter: ProgressReporter) -> int:
+                       reporter: ProgressReporter, *,
+                       parsed_doc=None) -> int:
+    import asyncio
     await reporter.update(JobState.EMBEDDING, 85, "chunking + embedding")
-    parsed = parse_pdf(filing.file_path)
-    chunks = chunk_document(parsed)
+    if parsed_doc is None:
+        parsed_doc = await asyncio.to_thread(parse_pdf, filing.file_path)
+    chunks = chunk_document(parsed_doc)
     count = await embed_and_index(db, filing.id, chunks)
     await reporter.update(JobState.READY, 100, f"{count} chunks indexed")
     filing.status = "ready"
@@ -136,24 +148,29 @@ async def _embed_stage(db: AsyncSession, filing: Filing,
 
 async def _upsert_statements(db: AsyncSession, filing: Filing,
                              items: list[MappedItem]) -> None:
-    # Idempotent: clear prior draft data for this filing, then insert.
+    # Idempotent: clear prior data for this filing, then insert.
     stmt_ids = select(FinancialStatement.id).where(
-        FinancialStatement.filing_id == filing.id,
-        FinancialStatement.status == StatementStatus.DRAFT)
+        FinancialStatement.filing_id == filing.id)
     await db.execute(delete(LineItem).where(LineItem.statement_id.in_(stmt_ids)))
     await db.execute(delete(FinancialStatement).where(
-        FinancialStatement.filing_id == filing.id,
-        FinancialStatement.status == StatementStatus.DRAFT))
+        FinancialStatement.filing_id == filing.id))
 
+    threshold = get_settings().confidence_review_threshold
     statements: dict[tuple[str, str], FinancialStatement] = {}
     for item in items:
         stype = STMT_FOR_ITEM.get(item.canonical_key, "pl")
         key = (item.period, stype)
         if key not in statements:
+            # Check if this statement group has any item below review threshold
+            has_low_conf = any(
+                i.confidence < threshold
+                for i in items
+                if (i.period, STMT_FOR_ITEM.get(i.canonical_key, "pl")) == key
+            )
             stmt = FinancialStatement(
                 filing_id=filing.id, company_id=filing.company_id,
                 period=item.period, statement_type=StatementType(stype),
-                status=StatementStatus.DRAFT)
+                status=StatementStatus.DRAFT if has_low_conf else StatementStatus.APPROVED)
             db.add(stmt)
             await db.flush()
             statements[key] = stmt

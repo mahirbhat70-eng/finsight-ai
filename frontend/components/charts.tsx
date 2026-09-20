@@ -1,19 +1,46 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import {
-  Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Line, Tooltip,
-  XAxis, YAxis,
+  Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend,
+  ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
 import { formatInr, formatPercent } from "@/lib/format";
 import { ValuationReport } from "@/lib/api";
 
-/** Charts (Playbook P5.1): one hue family, consistent axes. */
+/** Charts — responsive, premium dark theme, consistent accent family. */
 
-const ACCENT = "#38bdf8";
-const ACCENT_SOFT = "#818cf8";
+const C = {
+  accent:  "#38bdf8",
+  accent2: "#818cf8",
+  accent3: "#34d399",
+  danger:  "#f43f5e",
+  grid:    "#1e3a5f",
+  axis:    "#4a6f94",
+  tooltip: { bg: "#0d1929", border: "#1e3a5f" },
+};
+
+const TOOLTIP_STYLE = {
+  contentStyle: {
+    background: C.tooltip.bg,
+    border: `1px solid ${C.tooltip.border}`,
+    borderRadius: "0.5rem",
+    fontSize: "12px",
+    color: "#e2ecf7",
+    boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
+  },
+  cursor: { stroke: C.accent, strokeWidth: 1, strokeDasharray: "4 4" },
+};
+
+const AXIS_PROPS = {
+  stroke: "transparent",
+  tick: { fill: C.axis, fontSize: 11 },
+  tickLine: false,
+};
 
 export function TrendChart({ periods, series }: {
-  periods: string[]; series: { key: string; values: (number | null)[] }[];
+  periods: string[];
+  series: { key: string; values: (number | null)[] }[];
 }) {
   const data = periods.map((period, i) => {
     const row: Record<string, number | string> = { period };
@@ -21,22 +48,41 @@ export function TrendChart({ periods, series }: {
     return row;
   });
   return (
-    <AreaChart width={640} height={240} data={data}>
-      <defs>
-        <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={ACCENT} stopOpacity={0.5} />
-          <stop offset="100%" stopColor={ACCENT} stopOpacity={0.05} />
-        </linearGradient>
-      </defs>
-      <CartesianGrid stroke="#1e293b" />
-      <XAxis dataKey="period" stroke="#64748b" fontSize={11} />
-      <YAxis stroke="#64748b" fontSize={11} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
-      <Tooltip contentStyle={{ background: "#0f172a", border: "1px solid #334155" }} />
-      {series.map((s, i) => (
-        <Area key={s.key} type="monotone" dataKey={s.key} stroke={i ? ACCENT_SOFT : ACCENT}
-          fill={i ? "none" : "url(#g1)"} strokeWidth={2} />
-      ))}
-    </AreaChart>
+    <ResponsiveContainer width="100%" height={220}>
+      <AreaChart data={data} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
+        <defs>
+          <linearGradient id="g-accent" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stopColor={C.accent}  stopOpacity={0.3} />
+            <stop offset="100%" stopColor={C.accent}  stopOpacity={0}   />
+          </linearGradient>
+          <linearGradient id="g-accent2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stopColor={C.accent2} stopOpacity={0.25} />
+            <stop offset="100%" stopColor={C.accent2} stopOpacity={0}    />
+          </linearGradient>
+        </defs>
+        <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
+        <XAxis dataKey="period" {...AXIS_PROPS} />
+        <YAxis {...AXIS_PROPS} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} width={42} />
+        <Tooltip {...TOOLTIP_STYLE} />
+        {series.map((s, i) => (
+          <Area
+            key={s.key}
+            type="monotone"
+            dataKey={s.key}
+            stroke={i ? C.accent2 : C.accent}
+            fill={i ? "url(#g-accent2)" : "url(#g-accent)"}
+            strokeWidth={2}
+            dot={false}
+            activeDot={{ r: 4, fill: i ? C.accent2 : C.accent, strokeWidth: 0 }}
+          />
+        ))}
+        <Legend
+          wrapperStyle={{ fontSize: 11, color: C.axis, paddingTop: 8 }}
+          iconType="circle"
+          iconSize={8}
+        />
+      </AreaChart>
+    </ResponsiveContainer>
   );
 }
 
@@ -44,25 +90,29 @@ export function BridgeWaterfall({ bridge }: {
   bridge: ValuationReport["dcf"]["bridge"];
 }) {
   const data = [
-    { name: "PV explicit", value: bridge.pv_explicit },
-    { name: "PV terminal", value: bridge.pv_terminal_gordon },
-    { name: "Enterprise", value: bridge.enterprise_value },
-    { name: "Net debt", value: -bridge.net_debt },
-    { name: "Equity", value: bridge.equity_value },
+    { name: "PV Explicit", value: bridge.pv_explicit,            color: C.accent },
+    { name: "PV Terminal", value: bridge.pv_terminal_gordon,     color: C.accent2 },
+    { name: "Enterprise",  value: bridge.enterprise_value,       color: C.accent3 },
+    { name: "Net Debt",    value: -bridge.net_debt,              color: C.danger  },
+    { name: "Equity",      value: bridge.equity_value,           color: C.accent  },
   ];
   return (
-    <BarChart width={640} height={240} data={data}>
-      <CartesianGrid stroke="#1e293b" vertical={false} />
-      <XAxis dataKey="name" stroke="#64748b" fontSize={11} />
-      <YAxis stroke="#64748b" fontSize={11} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
-      <Tooltip contentStyle={{ background: "#0f172a", border: "1px solid #334155" }}
-        formatter={(v: number) => formatInr(v)} />
-      <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-        {data.map((d, i) => (
-          <Cell key={i} fill={d.value < 0 ? "#f43f5e" : i >= 3 ? ACCENT_SOFT : ACCENT} />
-        ))}
-      </Bar>
-    </BarChart>
+    <ResponsiveContainer width="100%" height={220}>
+      <BarChart data={data} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
+        <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
+        <XAxis dataKey="name" {...AXIS_PROPS} />
+        <YAxis {...AXIS_PROPS} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} width={42} />
+        <Tooltip
+          {...TOOLTIP_STYLE}
+          formatter={(v: number) => [formatInr(v), ""]}
+        />
+        <Bar dataKey="value" radius={[5, 5, 0, 0]} maxBarSize={60}>
+          {data.map((d, i) => (
+            <Cell key={i} fill={d.color} fillOpacity={0.85} />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
   );
 }
 
@@ -72,26 +122,34 @@ export function SensitivityHeatmap({ grid }: { grid: ValuationReport["sensitivit
   const max = Math.max(...values);
   const hue = (v: number) => {
     const t = (v - min) / (max - min || 1);
-    return `hsl(${200 + t * 40}, ${45 + t * 30}%, ${20 + t * 22}%)`;
+    if (t < 0.5) return `hsl(${210 + t * 40}, 60%, ${18 + t * 14}%)`;
+    return `hsl(${175 + (1 - t) * 35}, ${50 + t * 30}%, ${22 + t * 16}%)`;
   };
   return (
     <div className="overflow-x-auto">
-      <table className="text-xs">
+      <table className="w-full text-xs">
         <thead>
           <tr>
-            <th className="p-1.5 text-left text-slate-400">WACC \ g</th>
+            <th className="p-2 text-left text-[#4a6f94]">WACC \ g</th>
             {grid.g_axis.map((g) => (
-              <th key={g} className="p-1.5 text-right text-slate-400">{g.toFixed(1)}%</th>
+              <th key={g} className="p-2 text-right font-medium text-[#4a6f94]">{g.toFixed(1)}%</th>
             ))}
           </tr>
         </thead>
         <tbody>
           {grid.per_share.map((row, i) => (
             <tr key={i}>
-              <td className="p-1.5 text-slate-400">{grid.wacc_axis[i].toFixed(2)}%</td>
+              <td className="p-2 font-medium text-[#4a6f94]">{grid.wacc_axis[i].toFixed(2)}%</td>
               {row.map((v, j) => (
-                <td key={j} className="p-1.5 text-right font-mono"
-                  style={v === null ? undefined : { background: hue(v), color: "#e2e8f0" }}>
+                <td
+                  key={j}
+                  className="mono p-2 text-right transition-all"
+                  style={v === null ? undefined : {
+                    background: hue(v),
+                    color: "#e2ecf7",
+                    borderRadius: "4px",
+                  }}
+                >
                   {v === null ? "—" : v.toFixed(0)}
                 </td>
               ))}
@@ -106,15 +164,17 @@ export function SensitivityHeatmap({ grid }: { grid: ValuationReport["sensitivit
 export function TornadoChart({ tornado }: { tornado: ValuationReport["tornado"] }) {
   const data = tornado.slice(0, 7);
   return (
-    <BarChart width={640} height={260} data={data} layout="vertical">
-      <CartesianGrid stroke="#1e293b" horizontal={false} />
-      <XAxis type="number" stroke="#64748b" fontSize={11} />
-      <YAxis type="category" dataKey="driver" stroke="#64748b" fontSize={11} width={110} />
-      <Tooltip contentStyle={{ background: "#0f172a", border: "1px solid #334155" }} />
-      <Legend wrapperStyle={{ fontSize: 11 }} />
-      <Bar dataKey="high" name="favorable" fill={ACCENT} radius={[0, 4, 4, 0]} />
-      <Bar dataKey="low" name="unfavorable" fill="#f43f5e" radius={[0, 4, 4, 0]} />
-    </BarChart>
+    <ResponsiveContainer width="100%" height={260}>
+      <BarChart data={data} layout="vertical" margin={{ top: 4, right: 16, left: 0, bottom: 0 }}>
+        <CartesianGrid stroke={C.grid} strokeDasharray="3 3" horizontal={false} />
+        <XAxis type="number" {...AXIS_PROPS} />
+        <YAxis type="category" dataKey="driver" {...AXIS_PROPS} width={120} />
+        <Tooltip {...TOOLTIP_STYLE} />
+        <Legend wrapperStyle={{ fontSize: 11, color: C.axis }} iconType="circle" iconSize={8} />
+        <Bar dataKey="high" name="Favorable"   fill={C.accent3} radius={[0, 5, 5, 0]} maxBarSize={20} />
+        <Bar dataKey="low"  name="Unfavorable" fill={C.danger}  radius={[0, 5, 5, 0]} maxBarSize={20} />
+      </BarChart>
+    </ResponsiveContainer>
   );
 }
 
@@ -125,16 +185,17 @@ export function FcfVsEbitda({ periods, fcf, ebitda }: {
     period, fcf: fcf[i] ?? 0, ebitda: ebitda[i] ?? 0,
   }));
   return (
-    <BarChart width={640} height={240} data={data}>
-      <CartesianGrid stroke="#1e293b" vertical={false} />
-      <XAxis dataKey="period" stroke="#64748b" fontSize={11} />
-      <YAxis stroke="#64748b" fontSize={11} />
-      <Tooltip contentStyle={{ background: "#0f172a", border: "1px solid #334155" }}
-        formatter={(v: number) => formatInr(v)} />
-      <Legend wrapperStyle={{ fontSize: 11 }} />
-      <Bar dataKey="ebitda" name="EBITDA" fill={ACCENT} radius={[4, 4, 0, 0]} />
-      <Bar dataKey="fcf" name="FCF" fill="#f43f5e" radius={[4, 4, 0, 0]} />
-    </BarChart>
+    <ResponsiveContainer width="100%" height={220}>
+      <BarChart data={data} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
+        <CartesianGrid stroke={C.grid} strokeDasharray="3 3" vertical={false} />
+        <XAxis dataKey="period" {...AXIS_PROPS} />
+        <YAxis {...AXIS_PROPS} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} width={42} />
+        <Tooltip {...TOOLTIP_STYLE} formatter={(v: number) => [formatInr(v), ""]} />
+        <Legend wrapperStyle={{ fontSize: 11, color: C.axis, paddingTop: 8 }} iconType="circle" iconSize={8} />
+        <Bar dataKey="ebitda" name="EBITDA" fill={C.accent}  radius={[5, 5, 0, 0]} maxBarSize={32} />
+        <Bar dataKey="fcf"    name="FCF"    fill={C.accent2} radius={[5, 5, 0, 0]} maxBarSize={32} />
+      </BarChart>
+    </ResponsiveContainer>
   );
 }
 
@@ -143,13 +204,25 @@ export function MarginLine({ periods, margins }: {
 }) {
   const data = periods.map((period, i) => ({ period, margin: margins[i] ?? 0 }));
   return (
-    <div className="flex items-center gap-2">
-      <AreaChart width={280} height={80} data={data}>
-        <XAxis dataKey="period" hide />
-        <YAxis hide domain={[0, 0.3]} />
-        <Line type="monotone" dataKey="margin" stroke={ACCENT_SOFT} strokeWidth={2} dot={false} />
-      </AreaChart>
-      <span className="text-xs text-slate-400">EBITDA margin {formatPercent(margins.at(-1))}</span>
+    <div className="flex items-center gap-3">
+      <div className="flex-1">
+        <ResponsiveContainer width="100%" height={56}>
+          <AreaChart data={data} margin={{ top: 2, right: 2, left: 2, bottom: 2 }}>
+            <defs>
+              <linearGradient id="mg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stopColor={C.accent2} stopOpacity={0.3} />
+                <stop offset="100%" stopColor={C.accent2} stopOpacity={0}   />
+              </linearGradient>
+            </defs>
+            <XAxis dataKey="period" hide />
+            <YAxis hide domain={[0, 0.3]} />
+            <Area type="monotone" dataKey="margin" stroke={C.accent2} fill="url(#mg)" strokeWidth={2} dot={false} />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+      <span className="mono text-sm text-[#7a9bc0]">
+        {formatPercent(margins.at(-1))}
+      </span>
     </div>
   );
 }

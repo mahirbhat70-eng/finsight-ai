@@ -58,29 +58,53 @@ class MapResult:
 
 
 async def map_document(parsed: ParsedDoc, *, llm_assist: bool = True) -> MapResult:
+    import asyncio
     result = MapResult()
     provider = None
     if llm_assist:
         from app.llm.base import get_llm_provider
-
         provider = get_llm_provider()
 
+    # First pass: alias + fuzzy resolution; collect labels that need LLM assist.
+    _pending_llm: list[tuple[ParsedTable, list, str]] = []  # (table, row, label)
     for table in parsed.tables:
         if not table.periods or table.statement_type is None:
             continue
-        await _map_table(table, result, provider)
+        await _map_table_first_pass(table, result, provider, _pending_llm)
+
+    # Second pass: fire ALL LLM-assist calls concurrently.
+    if _pending_llm and provider is not None:
+        proposals = await asyncio.gather(
+            *[_llm_assist(label, provider) for _, _, label in _pending_llm],
+            return_exceptions=True,
+        )
+        for (table, row, label), proposal in zip(_pending_llm, proposals):
+            if isinstance(proposal, BaseException) or proposal is None:
+                result.unmapped.append(f"p{table.page_no}: {label}")
+                _append_unmapped_row(table, row, result)
+                continue
+            key = proposal.key
+            conf = min(proposal.confidence, get_settings().llm_assist_max_confidence)
+            if key not in ALL_KEYS:
+                result.unmapped.append(f"p{table.page_no}: {label} (bad proposal {key})")
+                continue
+            result.llm_proposals += 1
+            _append_mapped_row(table, row, key, conf, label, "llm_hint", result)
+
     _dedupe(result)
     _derive_missing(result)
     return result
 
 
-async def _map_table(table: ParsedTable, result: MapResult, provider) -> None:
+async def _map_table_first_pass(
+    table: ParsedTable, result: MapResult, provider,
+    pending_llm: list,
+) -> None:
+    """Resolve alias/fuzzy; queue LLM-assist rows without awaiting them."""
+    from app.ingestion.parser import parse_period
     header = table.rows[0]
     period_cells = [c for c in header[1:]]
-    # Map column index -> period (first header cell is the label column)
     col_periods: list[tuple[int, str]] = []
-    from app.ingestion.parser import parse_period
-
     for idx, cell in enumerate(period_cells, start=1):
         period = parse_period(cell)
         if period:
@@ -96,48 +120,76 @@ async def _map_table(table: ParsedTable, result: MapResult, provider) -> None:
         method = "alias" if conf == 1.0 else "fuzzy"
 
         if key is None and provider is not None and _has_value(row, col_periods):
-            proposal = await _llm_assist(label, provider)
-            if proposal is not None:
-                key = proposal.key
-                conf = min(proposal.confidence,
-                           get_settings().llm_assist_max_confidence)
-                method = "llm_hint"
-                result.llm_proposals += 1
+            # Defer: collect for batched async gather.
+            pending_llm.append((table, row, label))
+            continue
 
         if key is None:
             result.unmapped.append(f"p{table.page_no}: {label}")
-            # Ambiguous rows stay visible: they enter the review queue as
-            # low-confidence items (P3.4 flow) instead of vanishing silently.
-            for col_idx, period in col_periods:
-                if col_idx >= len(row):
-                    continue
-                value = parse_number(row[col_idx])
-                if value is None:
-                    continue
-                result.items.append(MappedItem(
-                    canonical_key=_unmapped_key(label), period=period,
-                    value=value * table.unit_scale, unit="INR_cr",
-                    page_no=table.page_no, raw_label=label,
-                    confidence=0.3, method="unmapped", source="ambiguous"))
+            _append_unmapped_row(table, row, result, col_periods=col_periods)
             continue
-        if key not in ALL_KEYS:  # LLM hallucinated a key
+        if key not in ALL_KEYS:
             result.unmapped.append(f"p{table.page_no}: {label} (bad proposal {key})")
             continue
 
-        for col_idx, period in col_periods:
-            if col_idx >= len(row):
-                continue
-            value = parse_number(row[col_idx])
-            if value is None:
-                continue
-            result.items.append(MappedItem(
-                canonical_key=key, period=period,
-                value=value * table.unit_scale,
-                unit="mn_shares" if key == "shares_outstanding" else "INR_cr",
-                page_no=table.page_no, raw_label=label,
-                confidence=conf if value else max(conf * 0.9, 0.0),
-                method=method,
-            ))
+        _append_mapped_row(table, row, key, conf, label, method, result,
+                           col_periods=col_periods)
+
+
+def _get_col_periods(table: ParsedTable) -> list[tuple[int, str]]:
+    from app.ingestion.parser import parse_period
+    header = table.rows[0]
+    col_periods: list[tuple[int, str]] = []
+    for idx, cell in enumerate(header[1:], start=1):
+        period = parse_period(cell)
+        if period:
+            col_periods.append((idx, period))
+    if not col_periods:
+        col_periods = [(idx, p) for idx, p in enumerate(table.periods, start=1)]
+    return col_periods
+
+
+def _append_mapped_row(
+    table: ParsedTable, row: list, key: str, conf: float,
+    label: str, method: str, result: MapResult, *,
+    col_periods: list[tuple[int, str]] | None = None,
+) -> None:
+    if col_periods is None:
+        col_periods = _get_col_periods(table)
+    for col_idx, period in col_periods:
+        if col_idx >= len(row):
+            continue
+        value = parse_number(row[col_idx])
+        if value is None:
+            continue
+        result.items.append(MappedItem(
+            canonical_key=key, period=period,
+            value=value * table.unit_scale,
+            unit="mn_shares" if key == "shares_outstanding" else "INR_cr",
+            page_no=table.page_no, raw_label=label,
+            confidence=conf if value else max(conf * 0.9, 0.0),
+            method=method,
+        ))
+
+
+def _append_unmapped_row(
+    table: ParsedTable, row: list, result: MapResult, *,
+    col_periods: list[tuple[int, str]] | None = None,
+) -> None:
+    label = row[0].strip() if row else ""
+    if col_periods is None:
+        col_periods = _get_col_periods(table)
+    for col_idx, period in col_periods:
+        if col_idx >= len(row):
+            continue
+        value = parse_number(row[col_idx])
+        if value is None:
+            continue
+        result.items.append(MappedItem(
+            canonical_key=_unmapped_key(label), period=period,
+            value=value * table.unit_scale, unit="INR_cr",
+            page_no=table.page_no, raw_label=label,
+            confidence=0.3, method="unmapped", source="ambiguous"))
 
 
 def _has_value(row: list[str], col_periods: list[tuple[int, str]]) -> bool:

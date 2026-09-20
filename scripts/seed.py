@@ -75,6 +75,14 @@ async def seed() -> None:
         session.add_all([pdf_filing, xlsx_filing])
         await session.flush()
 
+        from app.ingestion.chunker import chunk_document
+        from app.ingestion.parser import parse_pdf
+        from app.rag.indexing import embed_and_index
+
+        parsed = parse_pdf(pdf_filing.file_path)
+        chunks = chunk_document(parsed)
+        await embed_and_index(session, pdf_filing.id, chunks)
+
         stmt_ids: dict[tuple[str, str], FinancialStatement] = {}
         for period in statements["periods"]:
             for stype in ("pl", "bs", "cf"):

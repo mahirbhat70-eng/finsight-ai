@@ -27,30 +27,50 @@ INDEX_DDL = (
 )
 
 
-async def ensure_indexes() -> None:
-    engine = get_engine()
-    async with engine.begin() as conn:
+async def ensure_indexes(db: AsyncSession | None = None) -> None:
+    if db is not None:
         for ddl in INDEX_DDL:
-            await conn.execute(text(ddl))
+            await db.execute(text(ddl))
+    else:
+        engine = get_engine()
+        async with engine.begin() as conn:
+            for ddl in INDEX_DDL:
+                await conn.execute(text(ddl))
     logger.info("hybrid_indexes_ready")
 
 
 async def embed_and_index(db: AsyncSession, filing_id: uuid.UUID,
                           chunks: list[ChunkOut]) -> int:
+    import asyncio
     from app.llm.base import get_embedding_provider
 
     provider = get_embedding_provider()
+    batch_size = 16
+
+    # Build all batches.
+    batches = [
+        [c.text[:8000] for c in chunks[start:start + batch_size]]
+        for start in range(0, len(chunks), batch_size)
+    ]
+    chunk_batches = [
+        chunks[start:start + batch_size]
+        for start in range(0, len(chunks), batch_size)
+    ]
+
+    # Embed all batches concurrently.
+    all_vectors = await asyncio.gather(
+        *[provider.embed(b) for b in batches]
+    )
+
+    # Flatten and insert.
     inserted = 0
-    batch = 16
-    for start in range(0, len(chunks), batch):
-        batch_chunks = chunks[start:start + batch]
-        vectors = await provider.embed([c.text for c in batch_chunks])
+    for batch_chunks, vectors in zip(chunk_batches, all_vectors):
         for chunk, vector in zip(batch_chunks, vectors):
             db.add(Chunk(filing_id=filing_id, page_no=chunk.page_no,
                          section=chunk.section, chunk_idx=chunk.chunk_idx,
                          text=chunk.text, embedding=vector))
             inserted += 1
     await db.flush()
-    await ensure_indexes()
+    await ensure_indexes(db)
     logger.info("chunks_indexed", filing_id=str(filing_id), count=inserted)
     return inserted

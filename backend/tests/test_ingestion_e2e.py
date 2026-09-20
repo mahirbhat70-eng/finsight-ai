@@ -53,6 +53,7 @@ async def _setup_company() -> tuple:
             file_path=str(FIXTURES / "novatech_annual_report.pdf"),
             status="pending")
         db.add(filing)
+        await db.flush()
         job = IngestionJob(filing_id=filing.id, state=JobState.PENDING)
         db.add(job)
         await db.commit()
