@@ -1,0 +1,1386 @@
+{
+  "company": "NovaTech Industries Ltd",
+  "filing": "novatech_annual_report.pdf",
+  "facts": [
+    {
+      "key": "revenue",
+      "period": "FY2021",
+      "value": 4120.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Revenue from Operations"
+    },
+    {
+      "key": "revenue",
+      "period": "FY2022",
+      "value": 4860.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Revenue from Operations"
+    },
+    {
+      "key": "revenue",
+      "period": "FY2023",
+      "value": 5720.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Revenue from Operations"
+    },
+    {
+      "key": "revenue",
+      "period": "FY2024",
+      "value": 6610.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Revenue from Operations"
+    },
+    {
+      "key": "revenue",
+      "period": "FY2025",
+      "value": 7340.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Revenue from Operations"
+    },
+    {
+      "key": "cogs",
+      "period": "FY2021",
+      "value": 2801.6,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Cost of Materials Consumed"
+    },
+    {
+      "key": "cogs",
+      "period": "FY2022",
+      "value": 3333.96,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Cost of Materials Consumed"
+    },
+    {
+      "key": "cogs",
+      "period": "FY2023",
+      "value": 3992.56,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Cost of Materials Consumed"
+    },
+    {
+      "key": "cogs",
+      "period": "FY2024",
+      "value": 4653.44,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Cost of Materials Consumed"
+    },
+    {
+      "key": "cogs",
+      "period": "FY2025",
+      "value": 5130.66,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Cost of Materials Consumed"
+    },
+    {
+      "key": "gross_profit",
+      "period": "FY2021",
+      "value": 1318.4,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Gross Profit"
+    },
+    {
+      "key": "gross_profit",
+      "period": "FY2022",
+      "value": 1526.04,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Gross Profit"
+    },
+    {
+      "key": "gross_profit",
+      "period": "FY2023",
+      "value": 1727.44,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Gross Profit"
+    },
+    {
+      "key": "gross_profit",
+      "period": "FY2024",
+      "value": 1956.56,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Gross Profit"
+    },
+    {
+      "key": "gross_profit",
+      "period": "FY2025",
+      "value": 2209.34,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Gross Profit"
+    },
+    {
+      "key": "opex",
+      "period": "FY2021",
+      "value": 325.48,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Total Operating Expenses"
+    },
+    {
+      "key": "opex",
+      "period": "FY2022",
+      "value": 388.8,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Total Operating Expenses"
+    },
+    {
+      "key": "opex",
+      "period": "FY2023",
+      "value": 491.92,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Total Operating Expenses"
+    },
+    {
+      "key": "opex",
+      "period": "FY2024",
+      "value": 575.07,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Total Operating Expenses"
+    },
+    {
+      "key": "opex",
+      "period": "FY2025",
+      "value": 645.92,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Total Operating Expenses"
+    },
+    {
+      "key": "ebitda",
+      "period": "FY2021",
+      "value": 992.92,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Operating Profit (Before Depreciation and Amortisation)"
+    },
+    {
+      "key": "ebitda",
+      "period": "FY2022",
+      "value": 1137.24,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Operating Profit (Before Depreciation and Amortisation)"
+    },
+    {
+      "key": "ebitda",
+      "period": "FY2023",
+      "value": 1235.52,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Operating Profit (Before Depreciation and Amortisation)"
+    },
+    {
+      "key": "ebitda",
+      "period": "FY2024",
+      "value": 1381.49,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Operating Profit (Before Depreciation and Amortisation)"
+    },
+    {
+      "key": "ebitda",
+      "period": "FY2025",
+      "value": 1563.42,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Operating Profit (Before Depreciation and Amortisation)"
+    },
+    {
+      "key": "dna",
+      "period": "FY2021",
+      "value": 173.04,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Depreciation and Amortisation"
+    },
+    {
+      "key": "dna",
+      "period": "FY2022",
+      "value": 204.12,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Depreciation and Amortisation"
+    },
+    {
+      "key": "dna",
+      "period": "FY2023",
+      "value": 240.24,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Depreciation and Amortisation"
+    },
+    {
+      "key": "dna",
+      "period": "FY2024",
+      "value": 277.62,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Depreciation and Amortisation"
+    },
+    {
+      "key": "dna",
+      "period": "FY2025",
+      "value": 308.28,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Depreciation and Amortisation"
+    },
+    {
+      "key": "ebit",
+      "period": "FY2021",
+      "value": 819.88,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Operating Profit"
+    },
+    {
+      "key": "ebit",
+      "period": "FY2022",
+      "value": 933.12,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Operating Profit"
+    },
+    {
+      "key": "ebit",
+      "period": "FY2023",
+      "value": 995.28,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Operating Profit"
+    },
+    {
+      "key": "ebit",
+      "period": "FY2024",
+      "value": 1103.87,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Operating Profit"
+    },
+    {
+      "key": "ebit",
+      "period": "FY2025",
+      "value": 1255.14,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Operating Profit"
+    },
+    {
+      "key": "interest_expense",
+      "period": "FY2021",
+      "value": 263.24,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Finance Costs"
+    },
+    {
+      "key": "interest_expense",
+      "period": "FY2022",
+      "value": 274.08,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Finance Costs"
+    },
+    {
+      "key": "interest_expense",
+      "period": "FY2023",
+      "value": 285.79,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Finance Costs"
+    },
+    {
+      "key": "interest_expense",
+      "period": "FY2024",
+      "value": 351.94,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Finance Costs"
+    },
+    {
+      "key": "interest_expense",
+      "period": "FY2025",
+      "value": 439.34,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Finance Costs"
+    },
+    {
+      "key": "other_income",
+      "period": "FY2021",
+      "value": 45.32,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Other Income"
+    },
+    {
+      "key": "other_income",
+      "period": "FY2022",
+      "value": 53.46,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Other Income"
+    },
+    {
+      "key": "other_income",
+      "period": "FY2023",
+      "value": 62.92,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Other Income"
+    },
+    {
+      "key": "other_income",
+      "period": "FY2024",
+      "value": 72.71,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Other Income"
+    },
+    {
+      "key": "other_income",
+      "period": "FY2025",
+      "value": 80.74,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Other Income"
+    },
+    {
+      "key": "pbt",
+      "period": "FY2021",
+      "value": 601.96,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Profit Before Tax"
+    },
+    {
+      "key": "pbt",
+      "period": "FY2022",
+      "value": 712.5,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Profit Before Tax"
+    },
+    {
+      "key": "pbt",
+      "period": "FY2023",
+      "value": 772.41,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Profit Before Tax"
+    },
+    {
+      "key": "pbt",
+      "period": "FY2024",
+      "value": 824.64,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Profit Before Tax"
+    },
+    {
+      "key": "pbt",
+      "period": "FY2025",
+      "value": 896.54,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Profit Before Tax"
+    },
+    {
+      "key": "tax_expense",
+      "period": "FY2021",
+      "value": 151.51,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Total Tax Expense"
+    },
+    {
+      "key": "tax_expense",
+      "period": "FY2022",
+      "value": 179.34,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Total Tax Expense"
+    },
+    {
+      "key": "tax_expense",
+      "period": "FY2023",
+      "value": 194.42,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Total Tax Expense"
+    },
+    {
+      "key": "tax_expense",
+      "period": "FY2024",
+      "value": 207.56,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Total Tax Expense"
+    },
+    {
+      "key": "tax_expense",
+      "period": "FY2025",
+      "value": 225.66,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Total Tax Expense"
+    },
+    {
+      "key": "pat",
+      "period": "FY2021",
+      "value": 450.44,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Profit After Tax"
+    },
+    {
+      "key": "pat",
+      "period": "FY2022",
+      "value": 533.16,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Profit After Tax"
+    },
+    {
+      "key": "pat",
+      "period": "FY2023",
+      "value": 578.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Profit After Tax"
+    },
+    {
+      "key": "pat",
+      "period": "FY2024",
+      "value": 617.07,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Profit After Tax"
+    },
+    {
+      "key": "pat",
+      "period": "FY2025",
+      "value": 670.88,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Profit After Tax"
+    },
+    {
+      "key": "shares_outstanding",
+      "period": "FY2021",
+      "value": 738.0,
+      "unit": "mn_shares",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Shares Outstanding (mn)"
+    },
+    {
+      "key": "shares_outstanding",
+      "period": "FY2022",
+      "value": 739.0,
+      "unit": "mn_shares",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Shares Outstanding (mn)"
+    },
+    {
+      "key": "shares_outstanding",
+      "period": "FY2023",
+      "value": 740.0,
+      "unit": "mn_shares",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Shares Outstanding (mn)"
+    },
+    {
+      "key": "shares_outstanding",
+      "period": "FY2024",
+      "value": 741.0,
+      "unit": "mn_shares",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Shares Outstanding (mn)"
+    },
+    {
+      "key": "shares_outstanding",
+      "period": "FY2025",
+      "value": 742.0,
+      "unit": "mn_shares",
+      "page_no": 6,
+      "statement": "pl",
+      "label": "Shares Outstanding (mn)"
+    },
+    {
+      "key": "cash",
+      "period": "FY2021",
+      "value": 540.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Cash and Cash Equivalents"
+    },
+    {
+      "key": "cash",
+      "period": "FY2022",
+      "value": 560.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Cash and Cash Equivalents"
+    },
+    {
+      "key": "cash",
+      "period": "FY2023",
+      "value": 560.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Cash and Cash Equivalents"
+    },
+    {
+      "key": "cash",
+      "period": "FY2024",
+      "value": 350.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Cash and Cash Equivalents"
+    },
+    {
+      "key": "cash",
+      "period": "FY2025",
+      "value": 910.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Cash and Cash Equivalents"
+    },
+    {
+      "key": "trade_receivables",
+      "period": "FY2021",
+      "value": 654.68,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Trade Receivables (Sundry Debtors)"
+    },
+    {
+      "key": "trade_receivables",
+      "period": "FY2022",
+      "value": 825.53,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Trade Receivables (Sundry Debtors)"
+    },
+    {
+      "key": "trade_receivables",
+      "period": "FY2023",
+      "value": 1034.3,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Trade Receivables (Sundry Debtors)"
+    },
+    {
+      "key": "trade_receivables",
+      "period": "FY2024",
+      "value": 1249.56,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Trade Receivables (Sundry Debtors)"
+    },
+    {
+      "key": "trade_receivables",
+      "period": "FY2025",
+      "value": 1427.78,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Trade Receivables (Sundry Debtors)"
+    },
+    {
+      "key": "inventory",
+      "period": "FY2021",
+      "value": 568.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Inventories"
+    },
+    {
+      "key": "inventory",
+      "period": "FY2022",
+      "value": 694.19,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Inventories"
+    },
+    {
+      "key": "inventory",
+      "period": "FY2023",
+      "value": 853.2,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Inventories"
+    },
+    {
+      "key": "inventory",
+      "period": "FY2024",
+      "value": 1007.18,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Inventories"
+    },
+    {
+      "key": "inventory",
+      "period": "FY2025",
+      "value": 1124.53,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Inventories"
+    },
+    {
+      "key": "current_assets",
+      "period": "FY2021",
+      "value": 1886.28,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Current Assets"
+    },
+    {
+      "key": "current_assets",
+      "period": "FY2022",
+      "value": 2225.53,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Current Assets"
+    },
+    {
+      "key": "current_assets",
+      "period": "FY2023",
+      "value": 2619.11,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Current Assets"
+    },
+    {
+      "key": "current_assets",
+      "period": "FY2024",
+      "value": 2805.04,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Current Assets"
+    },
+    {
+      "key": "current_assets",
+      "period": "FY2025",
+      "value": 3682.51,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Current Assets"
+    },
+    {
+      "key": "trade_payables",
+      "period": "FY2021",
+      "value": 736.86,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Trade Payables (Sundry Creditors)"
+    },
+    {
+      "key": "trade_payables",
+      "period": "FY2022",
+      "value": 895.15,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Trade Payables (Sundry Creditors)"
+    },
+    {
+      "key": "trade_payables",
+      "period": "FY2023",
+      "value": 1093.85,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Trade Payables (Sundry Creditors)"
+    },
+    {
+      "key": "trade_payables",
+      "period": "FY2024",
+      "value": 1300.41,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Trade Payables (Sundry Creditors)"
+    },
+    {
+      "key": "trade_payables",
+      "period": "FY2025",
+      "value": 1461.89,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Trade Payables (Sundry Creditors)"
+    },
+    {
+      "key": "current_liabilities",
+      "period": "FY2021",
+      "value": 1570.53,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Current Liabilities"
+    },
+    {
+      "key": "current_liabilities",
+      "period": "FY2022",
+      "value": 1775.54,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Current Liabilities"
+    },
+    {
+      "key": "current_liabilities",
+      "period": "FY2023",
+      "value": 2031.15,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Current Liabilities"
+    },
+    {
+      "key": "current_liabilities",
+      "period": "FY2024",
+      "value": 2584.11,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Current Liabilities"
+    },
+    {
+      "key": "current_liabilities",
+      "period": "FY2025",
+      "value": 2914.65,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Current Liabilities"
+    },
+    {
+      "key": "st_borrowings",
+      "period": "FY2021",
+      "value": 730.68,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Short Term Borrowings"
+    },
+    {
+      "key": "st_borrowings",
+      "period": "FY2022",
+      "value": 758.89,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Short Term Borrowings"
+    },
+    {
+      "key": "st_borrowings",
+      "period": "FY2023",
+      "value": 794.3,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Short Term Borrowings"
+    },
+    {
+      "key": "st_borrowings",
+      "period": "FY2024",
+      "value": 1118.44,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Short Term Borrowings"
+    },
+    {
+      "key": "st_borrowings",
+      "period": "FY2025",
+      "value": 1269.27,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Short Term Borrowings"
+    },
+    {
+      "key": "lt_debt",
+      "period": "FY2021",
+      "value": 2192.03,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Long Term Borrowings"
+    },
+    {
+      "key": "lt_debt",
+      "period": "FY2022",
+      "value": 2276.68,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Long Term Borrowings"
+    },
+    {
+      "key": "lt_debt",
+      "period": "FY2023",
+      "value": 2382.9,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Long Term Borrowings"
+    },
+    {
+      "key": "lt_debt",
+      "period": "FY2024",
+      "value": 3355.33,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Long Term Borrowings"
+    },
+    {
+      "key": "lt_debt",
+      "period": "FY2025",
+      "value": 3807.8,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Long Term Borrowings"
+    },
+    {
+      "key": "total_debt",
+      "period": "FY2021",
+      "value": 2922.7,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Debt"
+    },
+    {
+      "key": "total_debt",
+      "period": "FY2022",
+      "value": 3035.57,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Debt"
+    },
+    {
+      "key": "total_debt",
+      "period": "FY2023",
+      "value": 3177.2,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Debt"
+    },
+    {
+      "key": "total_debt",
+      "period": "FY2024",
+      "value": 4473.78,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Debt"
+    },
+    {
+      "key": "total_debt",
+      "period": "FY2025",
+      "value": 5077.07,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Debt"
+    },
+    {
+      "key": "total_equity",
+      "period": "FY2021",
+      "value": 1590.35,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Shareholders Funds"
+    },
+    {
+      "key": "total_equity",
+      "period": "FY2022",
+      "value": 2046.89,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Shareholders Funds"
+    },
+    {
+      "key": "total_equity",
+      "period": "FY2023",
+      "value": 2539.28,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Shareholders Funds"
+    },
+    {
+      "key": "total_equity",
+      "period": "FY2024",
+      "value": 3062.94,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Shareholders Funds"
+    },
+    {
+      "key": "total_equity",
+      "period": "FY2025",
+      "value": 3629.65,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "bs",
+      "label": "Total Shareholders Funds"
+    },
+    {
+      "key": "ocf",
+      "period": "FY2021",
+      "value": 527.59,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Net Cash from Operating Activities"
+    },
+    {
+      "key": "ocf",
+      "period": "FY2022",
+      "value": 604.27,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Net Cash from Operating Activities"
+    },
+    {
+      "key": "ocf",
+      "period": "FY2023",
+      "value": 654.79,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Net Cash from Operating Activities"
+    },
+    {
+      "key": "ocf",
+      "period": "FY2024",
+      "value": 737.99,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Net Cash from Operating Activities"
+    },
+    {
+      "key": "ocf",
+      "period": "FY2025",
+      "value": 852.36,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Net Cash from Operating Activities"
+    },
+    {
+      "key": "capex",
+      "period": "FY2021",
+      "value": 520.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Purchase of Fixed Assets (Capex)"
+    },
+    {
+      "key": "capex",
+      "period": "FY2022",
+      "value": 610.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Purchase of Fixed Assets (Capex)"
+    },
+    {
+      "key": "capex",
+      "period": "FY2023",
+      "value": 700.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Purchase of Fixed Assets (Capex)"
+    },
+    {
+      "key": "capex",
+      "period": "FY2024",
+      "value": 2140.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Purchase of Fixed Assets (Capex)"
+    },
+    {
+      "key": "capex",
+      "period": "FY2025",
+      "value": 780.0,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Purchase of Fixed Assets (Capex)"
+    },
+    {
+      "key": "fcf",
+      "period": "FY2021",
+      "value": 7.59,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Free Cash Flow"
+    },
+    {
+      "key": "fcf",
+      "period": "FY2022",
+      "value": -5.73,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Free Cash Flow"
+    },
+    {
+      "key": "fcf",
+      "period": "FY2023",
+      "value": -45.21,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Free Cash Flow"
+    },
+    {
+      "key": "fcf",
+      "period": "FY2024",
+      "value": -1402.01,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Free Cash Flow"
+    },
+    {
+      "key": "fcf",
+      "period": "FY2025",
+      "value": 72.36,
+      "unit": "INR_cr",
+      "page_no": 6,
+      "statement": "cf",
+      "label": "Free Cash Flow"
+    }
+  ],
+  "qa_pairs": [
+    {
+      "question": "What was NovaTech's revenue in FY2025?",
+      "expected_metric": {
+        "key": "revenue",
+        "period": "FY2025",
+        "value": 7340.0
+      },
+      "expected_pages": [
+        6
+      ]
+    },
+    {
+      "question": "What was NovaTech's EBITDA in FY2024?",
+      "expected_metric": {
+        "key": "ebitda",
+        "period": "FY2024",
+        "value": 1381.49
+      },
+      "expected_pages": [
+        6
+      ]
+    },
+    {
+      "question": "What was profit after tax in FY2025?",
+      "expected_metric": {
+        "key": "pat",
+        "period": "FY2025",
+        "value": 670.88
+      },
+      "expected_pages": [
+        6
+      ]
+    },
+    {
+      "question": "What was capital expenditure in FY2024?",
+      "expected_metric": {
+        "key": "capex",
+        "period": "FY2024",
+        "value": 2140.0
+      },
+      "expected_pages": [
+        6
+      ]
+    },
+    {
+      "question": "What was cash and cash equivalents at the end of FY2025?",
+      "expected_metric": {
+        "key": "cash",
+        "period": "FY2025",
+        "value": 910.0
+      },
+      "expected_pages": [
+        6
+      ]
+    },
+    {
+      "question": "What is NovaTech's total debt as of FY2025?",
+      "expected_metric": {
+        "key": "total_debt",
+        "period": "FY2025",
+        "value": 5077.07
+      },
+      "expected_pages": [
+        6
+      ]
+    },
+    {
+      "question": "What were trade receivables in FY2023?",
+      "expected_metric": {
+        "key": "trade_receivables",
+        "period": "FY2023",
+        "value": 1034.3
+      },
+      "expected_pages": [
+        6
+      ]
+    },
+    {
+      "question": "What was operating cash flow in FY2025?",
+      "expected_metric": {
+        "key": "ocf",
+        "period": "FY2025",
+        "value": 852.36
+      },
+      "expected_pages": [
+        6
+      ]
+    },
+    {
+      "question": "What was inventory at the end of FY2025?",
+      "expected_metric": {
+        "key": "inventory",
+        "period": "FY2025",
+        "value": 1124.53
+      },
+      "expected_pages": [
+        6
+      ]
+    },
+    {
+      "question": "What is total shareholders' funds as of FY2025?",
+      "expected_metric": {
+        "key": "total_equity",
+        "period": "FY2025",
+        "value": 3629.65
+      },
+      "expected_pages": [
+        6
+      ]
+    },
+    {
+      "question": "Why did EBITDA margin decline in FY2023?",
+      "expected_metric": null,
+      "expected_pages": [
+        3
+      ],
+      "expected_contains": "21.6"
+    },
+    {
+      "question": "What are the major debt obligations?",
+      "expected_metric": null,
+      "expected_pages": [
+        7
+      ],
+      "expected_contains": "9.2"
+    },
+    {
+      "question": "What is customer concentration risk at NovaTech?",
+      "expected_metric": null,
+      "expected_pages": [
+        7
+      ],
+      "expected_contains": "14.2"
+    },
+    {
+      "question": "What was capex in FY24 and why did it spike?",
+      "expected_metric": null,
+      "expected_pages": [
+        3,
+        6
+      ],
+      "expected_contains": "2,140"
+    },
+    {
+      "question": "How have receivable days trended?",
+      "expected_metric": null,
+      "expected_pages": [
+        3
+      ],
+      "expected_contains": "71"
+    },
+    {
+      "question": "What are the related party transactions?",
+      "expected_metric": null,
+      "expected_pages": [
+        7
+      ],
+      "expected_contains": "214"
+    },
+    {
+      "question": "What risk factors does NovaTech highlight?",
+      "expected_metric": null,
+      "expected_pages": [
+        8
+      ],
+      "expected_contains": null
+    },
+    {
+      "question": "What drove FY2025 revenue growth?",
+      "expected_metric": null,
+      "expected_pages": [
+        3
+      ],
+      "expected_contains": "7,340"
+    },
+    {
+      "question": "How is the company funded after the expansion?",
+      "expected_metric": null,
+      "expected_pages": [
+        7
+      ],
+      "expected_contains": "4,474"
+    },
+    {
+      "question": "What happened to cash in FY2024?",
+      "expected_metric": null,
+      "expected_pages": [
+        3
+      ],
+      "expected_contains": "350"
+    }
+  ],
+  "pages": {
+    "mdna_fy2021": 3,
+    "mdna_fy2022": 3,
+    "mdna_fy2023": 3,
+    "mdna_fy2024": 3,
+    "mdna_fy2025": 3,
+    "standalone_pl": 5,
+    "pl": 6,
+    "bs": 6,
+    "cf": 6,
+    "debt_note": 7,
+    "concentration": 7,
+    "related_party": 7,
+    "risk": 8,
+    "num_pages": 60
+  },
+  "concentration_pct": 14.2
+}

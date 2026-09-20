@@ -1,0 +1,45 @@
+name: nightly-eval
+
+on:
+  schedule:
+    - cron: "0 18 * * *" # 23:30 IST nightly
+  workflow_dispatch:
+
+jobs:
+  rag-eval:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: finsight
+          POSTGRES_PASSWORD: finsight
+          POSTGRES_DB: finsight
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U finsight"
+          --health-interval 5s --health-retries 12
+    env:
+      DATABASE_URL: postgresql+asyncpg://finsight:finsight@localhost:5432/finsight
+      LLM_PROVIDER: mock
+      EMBEDDING_PROVIDER: mock
+      APP_ENV: dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e "backend[dev]"
+      - name: Seed
+        run: |
+          python scripts/generate_novatech.py --all
+          python scripts/init_db.py
+          python scripts/seed.py
+      - name: Eval (retrieval-only, deterministic mock embeddings)
+        run: python scripts/eval_rag.py --retrieval-only
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-rag-report
+          path: reports/

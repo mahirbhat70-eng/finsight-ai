@@ -1,0 +1,31 @@
+# FinSight backend — production image (Phase 7)
+# Multi-stage, slim, non-root, health-checked.
+FROM python:3.12-slim AS builder
+ENV PYTHONDONTWRITEBYTECODE=1 PIP_NO_CACHE_DIR=1
+WORKDIR /build
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+COPY pyproject.toml ./
+COPY app ./app
+RUN pip wheel --no-deps -w /wheels .
+
+FROM python:3.12-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+RUN groupadd -r finsight && useradd -r -g finsight finsight
+RUN apt-get update && apt-get install -y --no-install-recommends libpq5 curl \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY --from=builder /wheels /wheels
+COPY pyproject.toml ./
+COPY app ./app
+COPY alembic.ini ./
+COPY alembic ./alembic
+RUN pip install --no-cache-dir /wheels/*.whl gunicorn uvicorn uvloop \
+    && rm -rf /wheels
+RUN mkdir -p /app/data && chown -R finsight:finsight /app
+USER finsight
+EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=5s --retries=5 \
+    CMD curl -fsS http://localhost:8000/api/v1/health | grep -q '"status":"ok"' || exit 1
+CMD ["gunicorn", "app.main:app", "-k", "uvicorn.workers.UvicornWorker", \
+     "--bind", "0.0.0.0:8000", "--workers", "4", "--timeout", "120"]

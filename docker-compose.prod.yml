@@ -1,0 +1,100 @@
+# FinSight AI — production stack (Phase 7, Track A: VM + compose + Caddy TLS)
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ${DB_USER:-finsight}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set in .env}
+      POSTGRES_DB: ${DB_NAME:-finsight}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - /backups:/backups
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-finsight}"]
+      interval: 10s
+      retries: 12
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${DB_USER:-finsight}:${DB_PASSWORD}@db:5432/${DB_NAME:-finsight}
+      REDIS_URL: redis://redis:6379
+      APP_ENV: prod
+      LLM_PROVIDER: ${LLM_PROVIDER:-gemini}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-gemini}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      JWT_SECRET: ${JWT_SECRET:?set in .env}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://${DOMAIN}}
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    read_only: false  # flip to true with a tmpfs for /tmp in stricter setups
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    command: arq app.ingestion.worker.WorkerSettings
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${DB_USER:-finsight}:${DB_PASSWORD}@db:5432/${DB_NAME:-finsight}
+      REDIS_URL: redis://redis:6379
+      APP_ENV: prod
+      LLM_PROVIDER: ${LLM_PROVIDER:-gemini}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-gemini}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    environment:
+      NEXT_PUBLIC_API_BASE: https://${DOMAIN}/api/v1
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 12
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?set in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+      - frontend
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

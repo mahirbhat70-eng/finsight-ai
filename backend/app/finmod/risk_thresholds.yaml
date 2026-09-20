@@ -1,0 +1,109 @@
+# FinSight risk thresholds (Playbook P2.5) — editable without code changes.
+# Semantics: value breaches `high` strictly -> severity high;
+# breaches `medium` strictly -> severity medium;
+# exactly at a threshold -> the LOWER severity (boundary tests pin this).
+#
+# window: latest   -> evaluate the most recent period
+#         any      -> flag if any period in the series breaches
+#         streak2  -> flag if breached in 2+ consecutive periods
+# metric names refer to ratios.py keys (except special rules below).
+# Special context inputs: wacc (decimal), top_customer_concentration (percent).
+
+rules:
+  - id: lev_de
+    category: leverage
+    metric: debt_to_equity
+    op: gt
+    medium: 1.0
+    high: 2.0
+    window: latest
+    rationale: "Debt/equity of {value:.2f}x vs {threshold:.1f}x — leverage {direction}."
+
+  - id: lev_nd_ebitda
+    category: leverage
+    metric: net_debt_to_ebitda
+    op: gt
+    medium: 3.0
+    high: 4.0
+    window: any
+    rationale: "Net debt/EBITDA hit {value:.2f}x vs {threshold:.1f}x."
+
+  - id: liq_current
+    category: liquidity
+    metric: current_ratio
+    op: lt
+    medium: 1.3
+    high: 1.0
+    window: any
+    rationale: "Current ratio {value:.2f}x vs {threshold:.1f}x."
+
+  - id: liq_quick
+    category: liquidity
+    metric: quick_ratio
+    op: lt
+    high: 0.8
+    window: any
+    rationale: "Quick ratio {value:.2f}x below 0.8x — ex-inventory liquidity thin."
+
+  - id: prof_margin_trend
+    category: profitability
+    metric: ebitda_margin
+    op: drop_bps
+    medium: 150        # bps YoY decline
+    window: any
+    rationale: "EBITDA margin declined {value:.0f}bps YoY (vs {threshold:.0f}bps rule)."
+
+  - id: eq_ocf_ebitda
+    category: earnings_quality
+    metric: ocf_ebitda
+    op: lt
+    medium: 0.6
+    high: 0.45
+    window: streak2
+    rationale: "OCF/EBITDA at {value:.2f}x for 2+ years — accrual-heavy earnings."
+
+  - id: eq_fcf_negative
+    category: earnings_quality
+    metric: fcf
+    op: negative_while_ebitda_grows
+    medium: 0
+    window: any
+    rationale: "FCF negative while EBITDA grows — cash burn funded by balance sheet."
+
+  - id: cov_interest
+    category: coverage
+    metric: interest_cover
+    op: lt
+    medium: 4.0
+    high: 2.5
+    window: any
+    rationale: "Interest coverage {value:.1f}x vs {threshold:.1f}x."
+
+  - id: vc_roic_wacc
+    category: value_creation
+    metric: roic
+    op: below_wacc
+    high: 0
+    window: latest
+    rationale: "ROIC {value:.1%} below WACC {wacc:.1%} — growth destroys value."
+
+  - id: conc_customer
+    category: concentration
+    metric: top_customer_concentration
+    op: gt
+    medium: 10.0
+    window: latest
+    rationale: "Top customer {value:.1f}% of revenue."
+
+category_weights:      # composite score 0-100 (100 = clean)
+  leverage: 20
+  liquidity: 15
+  profitability: 15
+  earnings_quality: 20
+  coverage: 15
+  value_creation: 10
+  concentration: 5
+
+severity_penalty:      # points deducted per flag, capped per category
+  high: 15
+  medium: 8
