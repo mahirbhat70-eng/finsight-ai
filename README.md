@@ -14,31 +14,31 @@ investment memo PDF, and committee deck.
 
 ```mermaid
 flowchart LR
-    subgraph client[Analyst]
-        UI[Next.js 15 dashboard]
+    subgraph client["Analyst"]
+        UI["Next.js 15 Dashboard"]
     end
-    subgraph api[FastAPI /api/v1]
-        R[routers: companies, metrics, valuation, risk, filings, review, copilot, peers, exports, auth]
+    subgraph api["FastAPI /api/v1"]
+        R["Routers: companies, metrics, valuation, risk, review, copilot, exports"]
     end
-    subgraph engine[Deterministic core]
-        F[finmod: ratios, WACC, DCF, scenarios, risk rules]
-        T[taxonomy: 26 canonical keys]
+    subgraph engine["Deterministic Core"]
+        F["finmod: ratios, WACC, DCF, scenarios, risk rules"]
+        T["taxonomy: 26 canonical keys"]
     end
-    subgraph pipeline[Ingestion (arq + Redis)]
-        P[pdfplumber parser] --> M[mapper: alias -> RapidFuzz -> LLM assist]
-        M --> RV{confidence < 0.85?}
-        RV -- yes --> Q[human review queue]
-        RV -- no --> C[chunker 500-800 tokens]
-        C --> E[embed + HNSW + tsvector]
+    subgraph pipeline["Ingestion (arq + Redis)"]
+        P["pdfplumber parser"] --> M["mapper: alias / RapidFuzz / LLM assist"]
+        M --> RV{"confidence < 0.85?"}
+        RV -- Yes --> Q["Human Review Queue"]
+        RV -- No --> C["chunker (500-800 tokens)"]
+        C --> E["embed + HNSW + tsvector"]
     end
-    subgraph store[(PostgreSQL 16 + pgvector)]
+    subgraph store["PostgreSQL 16 + pgvector"]
     end
-    G[Gemini adapter | OpenAI-compatible | Mock] --> L[(llm_calls accounting)]
+    G["Gemini Adapter / OpenAI / Mock"] --> L[("llm_calls accounting")]
     UI --> R --> F
     R --> pipeline --> store
     R --> G
-    E --> H[hybrid search: cosine + websearch_to_tsquery + RRF k=60]
-    H --> V[grounding verifier] --> QL[(qa_logs)]
+    E --> H["Hybrid Search: Cosine + tsquery + RRF (k=60)"]
+    H --> V["Grounding Verifier"] --> QL[("qa_logs")]
 ```
 
 ## Quickstart
