@@ -14,31 +14,44 @@ investment memo PDF, and committee deck.
 
 ```mermaid
 flowchart LR
-    subgraph client["Analyst"]
-        UI["Next.js 15 Dashboard"]
+    subgraph UI ["User Interface"]
+        DASH["Next.js 15 Dashboard"]
     end
-    subgraph api["FastAPI /api/v1"]
-        R["Routers: companies, metrics, valuation, risk, review, copilot, exports"]
+
+    subgraph Backend ["FastAPI API Layer"]
+        API["FastAPI Endpoints"]
     end
-    subgraph engine["Deterministic Core"]
-        F["finmod: ratios, WACC, DCF, scenarios, risk rules"]
-        T["taxonomy: 26 canonical keys"]
+
+    subgraph Core ["Deterministic Engine"]
+        FINMOD["finmod: DCF, WACC, Ratios, Risk Rules"]
+        TAX["Taxonomy Engine: 26 Canonical Keys"]
     end
-    subgraph pipeline["Ingestion (arq + Redis)"]
-        P["pdfplumber parser"] --> M["mapper: alias / RapidFuzz / LLM assist"]
-        M --> RV{"confidence < 0.85?"}
-        RV -- Yes --> Q["Human Review Queue"]
-        RV -- No --> C["chunker (500-800 tokens)"]
-        C --> E["embed + HNSW + tsvector"]
+
+    subgraph Ingestion ["Ingestion Pipeline"]
+        PARSER["PDF Parser"] --> MAPPER["Taxonomy Mapper"]
+        MAPPER --> CHECK{"Confidence Score"}
+        CHECK -->|Confidence < 0.85| REVIEW["Human Review Queue"]
+        CHECK -->|Confidence >= 0.85| CHUNKER["Document Chunker"]
+        CHUNKER --> EMBED["Embeddings Engine"]
     end
-    subgraph store["PostgreSQL 16 + pgvector"]
+
+    subgraph Storage ["Database and Cache"]
+        PG[("PostgreSQL + pgvector")]
+        REDIS[("Redis Queue")]
     end
-    G["Gemini Adapter / OpenAI / Mock"] --> L[("llm_calls accounting")]
-    UI --> R --> F
-    R --> pipeline --> store
-    R --> G
-    E --> H["Hybrid Search: Cosine + tsquery + RRF (k=60)"]
-    H --> V["Grounding Verifier"] --> QL[("qa_logs")]
+
+    subgraph AI ["LLM and RAG"]
+        RAG["Hybrid Search: Vector + BM25"]
+        COPILOT["Gemini 2.5 Flash Copilot"]
+    end
+
+    DASH --> API
+    API --> FINMOD
+    API --> Ingestion
+    EMBED --> PG
+    REDIS --> Ingestion
+    PG --> RAG
+    RAG --> COPILOT
 ```
 
 ## Quickstart
