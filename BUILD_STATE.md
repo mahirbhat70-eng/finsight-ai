@@ -15,6 +15,7 @@ Gemini via provider adapter (mock for tests).
 - Money: INR crore, Numeric(18,2). Periods: FY2021..FY2025 (March end).
 - finmod/ pure; app/models owns persistence; app/llm adapter (gemini|openai|mock).
 - Golden tests pin computed fixture values; update together with generator.
+- DECISION: Added greenlet / sqlalchemy[asyncio] to backend dependencies for SQLAlchemy 2.0 async engine support in Linux CI.
 
 ## Next
 Phase 1 — Domain Model & Synthetic Data (taxonomy, models, NovaTech fixtures).
