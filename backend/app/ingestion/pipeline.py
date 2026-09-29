@@ -16,7 +16,6 @@ from app.ingestion.chunker import chunk_document
 from app.ingestion.mapper import MappedItem, map_document
 from app.ingestion.parser import parse_pdf
 from app.models import (
-    Chunk,
     Filing,
     FinancialStatement,
     IngestionJob,

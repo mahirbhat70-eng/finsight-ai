@@ -49,6 +49,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
 async def init_models() -> None:
     """Dev shortcut: create_all (idempotent). Prefer Alembic in staging/prod."""
     from sqlalchemy import text
+
     from app.models import Base  # noqa: F401 — imports the full metadata
 
     engine = get_engine()

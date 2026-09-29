@@ -10,9 +10,10 @@ from app.ingestion.parser import (
     detect_statement_type,
     infer_unit_scale,
     parse_number,
-    parse_period,
     parse_pdf,
+    parse_period,
 )
+
 
 def find_fixtures() -> Path:
     """data/fixtures in the merged repo OR inside a phase folder."""

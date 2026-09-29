@@ -17,7 +17,7 @@ import structlog
 from pydantic import BaseModel, Field
 
 from app.core.settings import get_settings
-from app.finmod.taxonomy import ALL_KEYS, DERIVED_RULES, resolve_label
+from app.finmod.taxonomy import ALL_KEYS, resolve_label
 from app.ingestion.parser import ParsedDoc, ParsedTable, parse_number
 
 logger = structlog.get_logger("ingestion.mapper")

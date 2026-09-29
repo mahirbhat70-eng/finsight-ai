@@ -1,6 +1,5 @@
 """Auth endpoints (Phase 7): login (JWT) + API key issuance."""
 
-import uuid
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException

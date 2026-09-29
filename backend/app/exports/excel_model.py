@@ -188,7 +188,7 @@ def build_workbook(series: dict, periods: list[str],
         ("Equity value", None, MONEY),
         ("Per share (INR)", None, SHARE),
     ]
-    for r, (label, formula, fmt) in enumerate(dcf_rows, start=8):
+    for r, (label, formula, _fmt) in enumerate(dcf_rows, start=8):
         model.cell(row=r, column=1, value=label).font = Font(bold=(r in (11, 14)))
         if formula:
             model.cell(row=r, column=2, value=formula)

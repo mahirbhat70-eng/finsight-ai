@@ -17,6 +17,7 @@ from app.rag.orchestrator import (
 )
 from app.rag.retrieval import RetrievedChunk
 
+
 def _find_fixtures() -> Path:
     for parent in [Path(__file__).resolve()] + list(Path(__file__).resolve().parents):
         cand = parent / "data" / "fixtures"
@@ -69,8 +70,6 @@ async def test_copilot_sync_contract_and_retry() -> None:
     """Full loop against a seeded DB with a stubbed provider: a bad answer
     triggers exactly one regeneration; the final payload carries the
     verification verdict and qa_logs is written."""
-    import json
-    import uuid as uuid_mod
 
     from sqlalchemy import select
 
@@ -101,7 +100,7 @@ async def test_copilot_sync_contract_and_retry() -> None:
                 r"\[S1\] id=[0-9a-f-]+ page=\d+ section=[^\n]*\n(.{20,200})", prompt)
             quote = (text_match.group(1) if text_match else "revenue")[:200]
             return schema.model_validate({
-                "answer": f"Revenue was Rs 7,340.0 crore [S1].",
+                "answer": "Revenue was Rs 7,340.0 crore [S1].",
                 "citations": [{"chunk_id": chunk_id, "doc": "annual_report.pdf",
                                "page_no": page, "quote": quote}],
                 "confidence": 0.9, "insufficient_evidence": False})

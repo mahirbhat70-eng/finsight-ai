@@ -20,8 +20,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.errors import AppError
 from app.core.logging import get_request_id
 from app.db.session import get_db
-from app.models import Company, Filing, FilingDocType, IngestionJob, JobState
 from app.ingestion.pipeline import job_state
+from app.models import Company, Filing, FilingDocType, IngestionJob, JobState
 
 router = APIRouter(tags=["filings"])
 logger = structlog.get_logger("api.filings")

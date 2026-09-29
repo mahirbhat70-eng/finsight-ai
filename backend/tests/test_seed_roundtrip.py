@@ -17,7 +17,6 @@ from sqlalchemy import select
 
 from app.db.session import get_session_factory
 from app.models import Company, FinancialStatement, LineItem, StatementStatus
-from novatech_model import build_model
 
 pytestmark = pytest.mark.integration
 
@@ -42,7 +41,6 @@ STMT_FOR_ITEM = {
 
 
 async def test_seed_roundtrip() -> None:
-    import asyncio
 
     from seed import seed
 
@@ -71,7 +69,6 @@ async def test_seed_roundtrip() -> None:
             for it in items:
                 by_key_period[(it.canonical_key, stmt.period)] = float(it.value)
 
-        model = build_model()
         mismatches = 0
         for key, values in expected["items"].items():
             for period, value in zip(expected["periods"], values):

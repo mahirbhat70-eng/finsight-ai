@@ -7,7 +7,6 @@ from datetime import UTC, datetime
 
 import structlog
 from arq.connections import RedisSettings
-from sqlalchemy import select
 
 from app.core.settings import get_settings
 from app.db.session import get_session_factory

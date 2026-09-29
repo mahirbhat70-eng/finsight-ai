@@ -1,7 +1,6 @@
 """PPTX deck (Playbook P6.5): 7 slides, chart PNGs shared with the memo,
 consistent title bar, speaker notes with the numbers."""
 
-from datetime import UTC, datetime
 from pathlib import Path
 
 from pptx import Presentation
@@ -61,8 +60,8 @@ def build_deck(output_path: str, report: dict, series: dict, periods: list[str],
 
     # 2. Financial performance
     _slide(prs, "Financial performance",
-           f"FCF fell to negative in FY2024 on the 2,140 Cr expansion; earnings "
-           f"quality OCF/EBITDA 0.53x.")
+           "FCF fell to negative in FY2024 on the 2,140 Cr expansion; earnings "
+           "quality OCF/EBITDA 0.53x.")
     if chart_paths and "revenue" in chart_paths:
         prs.slides[-1].shapes.add_picture(str(chart_paths["revenue"]),
                                           Inches(0.6), Inches(1.3), width=Inches(8.8))

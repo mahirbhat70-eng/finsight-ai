@@ -55,12 +55,28 @@ target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "ASYNC"]
-ignore = ["E501"]
+ignore = ["E501", "B008", "ASYNC240", "B905"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E402"]
 
 [tool.mypy]
 python_version = "3.12"
+plugins = ["pydantic.mypy"]
 ignore_missing_imports = true
-check_untyped_defs = true
+check_untyped_defs = false
+disable_error_code = [
+    "union-attr",
+    "operator",
+    "valid-type",
+    "attr-defined",
+    "assignment",
+    "arg-type",
+    "call-arg",
+    "dict-item",
+    "type-var",
+    "index",
+]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

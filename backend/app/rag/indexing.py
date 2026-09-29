@@ -42,6 +42,7 @@ async def ensure_indexes(db: AsyncSession | None = None) -> None:
 async def embed_and_index(db: AsyncSession, filing_id: uuid.UUID,
                           chunks: list[ChunkOut]) -> int:
     import asyncio
+
     from app.llm.base import get_embedding_provider
 
     provider = get_embedding_provider()

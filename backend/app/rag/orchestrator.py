@@ -12,7 +12,6 @@ import structlog
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.settings import get_settings
-from app.db.session import get_session_factory
 from app.finmod.ratios import compute_metrics
 from app.llm.base import drain_llm_calls, get_llm_provider
 from app.models import LlmCall, QaLog
@@ -96,7 +95,6 @@ def digest_value_pool(series: dict[str, list], periods: list[str]) -> list[float
 def assemble_context(chunks: list[RetrievedChunk], digest: str,
                       question: str, history: list[dict] | None = None
                       ) -> str:
-    settings = get_settings()
     context_blocks: list[str] = []
     budget = CONTEXT_BUDGET_TOKENS
     for idx, chunk in enumerate(chunks, start=1):

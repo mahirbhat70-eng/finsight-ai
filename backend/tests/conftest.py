@@ -18,6 +18,7 @@ else:
 
 import pytest
 
+
 @pytest.fixture(autouse=True)
 async def reset_db_engine():
     from app.db.session import dispose_engine

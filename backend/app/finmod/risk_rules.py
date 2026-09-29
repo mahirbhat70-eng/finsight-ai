@@ -71,7 +71,6 @@ class RuleEngine:
             val = context.get("top_customer_concentration")
             return [("latest", val)] if val is not None else []
         if metric == "fcf":
-            row = table._rows.get("fcf_conversion", {})  # noqa: SLF001
             # negative-FCF rule needs raw fcf; pull from context if provided
             raw = context.get("fcf_series")
             if raw:
@@ -118,7 +117,7 @@ class RuleEngine:
                 # YoY decline in bps of the metric (percent units); scan all
                 # consecutive pairs, report the largest qualifying decline.
                 best = None
-                for (p_prev, prev), (p_cur, cur) in zip(series, series[1:]):
+                for (_p_prev, prev), (p_cur, cur) in zip(series, series[1:]):
                     drop_bps = (prev - cur) * 10_000  # decimal -> bps
                     if drop_bps > rule.get("medium", 150):
                         if best is None or drop_bps > best[2]:

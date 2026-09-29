@@ -24,8 +24,8 @@ from app.finmod.engine import run_company
 from app.finmod.lineage import FinancialResult, ResultTable
 from app.finmod.ratios import compute_metrics
 from app.finmod.risk_rules import RuleEngine
-from app.finmod.scenarios import sensitivity_grid
 from app.finmod.wacc import AssumptionSet, compute_wacc
+
 
 def _find_fixtures() -> Path:
     for parent in [Path(__file__).resolve()] + list(Path(__file__).resolve().parents):

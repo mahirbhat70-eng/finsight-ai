@@ -6,10 +6,8 @@ finds the customer-concentration page in top 3, and the review flow
 resumes the job to READY.
 """
 
-import asyncio
 import json
 import sys
-import uuid
 from pathlib import Path
 
 import pytest
@@ -71,8 +69,9 @@ async def test_ingestion_e2e() -> None:
         # Mapping quality vs ground truth
         gt = json.loads((FIXTURES / "novatech_ground_truth.json").read_text())
         gt_map = {(f["key"], f["period"]): f["value"] for f in gt["facts"]}
-        from app.models import FinancialStatement, LineItem, StatementStatus
         from sqlalchemy import select
+
+        from app.models import FinancialStatement, LineItem
 
         rows = (await db.execute(
             select(LineItem.canonical_key, FinancialStatement.period,
@@ -94,8 +93,8 @@ async def test_ingestion_e2e() -> None:
         assert 0 < report.review_items <= 12
 
         # Approve everything through the review API logic
-        from app.core.settings import get_settings
         from app.api.v1.review import review_item
+        from app.core.settings import get_settings
 
         threshold = get_settings().confidence_review_threshold
         low = (await db.execute(

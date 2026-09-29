@@ -102,10 +102,10 @@ class NarrativeIn(BaseModel):
 async def peer_narrative(company_id: uuid.UUID, payload: NarrativeIn,
                          db: AsyncSession = Depends(get_db)) -> dict:
     """Grounded explanation of differences; the LLM never picks a winner."""
+    from app.llm.base import get_llm_provider
     from app.rag.grounding import verify_answer
     from app.rag.prompts import PEER_NARRATIVE_SYSTEM_PROMPT_V1
     from app.rag.retrieval import hybrid_search
-    from app.llm.base import get_llm_provider
     from app.schemas.copilot import CopilotAnswer
 
     metrics, series, periods = await _target_metrics(db, company_id)

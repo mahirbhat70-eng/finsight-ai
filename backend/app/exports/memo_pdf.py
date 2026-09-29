@@ -15,7 +15,13 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import (
-    Image, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle,
+    Image,
+    PageBreak,
+    Paragraph,
+    SimpleDocTemplate,
+    Spacer,
+    Table,
+    TableStyle,
 )
 
 INK = colors.HexColor("#1a1a2e")
@@ -45,8 +51,6 @@ def build_memo(output_path: str, report: dict, series: dict, periods: list[str],
     body = ParagraphStyle("Body", parent=styles["BodyText"], fontSize=9, leading=13)
     h1 = ParagraphStyle("H1", parent=styles["Heading1"], fontSize=14, textColor=INK,
                         spaceBefore=10, spaceAfter=6)
-    h2 = ParagraphStyle("H2", parent=styles["Heading2"], fontSize=11, textColor=ACCENT,
-                        spaceBefore=8, spaceAfter=4)
     cover = ParagraphStyle("Cover", parent=styles["Title"], fontSize=22, textColor=INK,
                            alignment=TA_CENTER, spaceAfter=8)
     sub = ParagraphStyle("Sub", parent=styles["Normal"], fontSize=11, textColor=MUTED,
@@ -56,7 +60,7 @@ def build_memo(output_path: str, report: dict, series: dict, periods: list[str],
     story: list = []
 
     # Cover
-    story += [Spacer(1, 50 * mm), Paragraph(f"Investment Memorandum", cover),
+    story += [Spacer(1, 50 * mm), Paragraph("Investment Memorandum", cover),
               Paragraph(company_name, cover), Spacer(1, 6 * mm),
               Paragraph("Valuation, risk and peer assessment", sub),
               Paragraph(f"assumptions version {assumptions_version}", sub),

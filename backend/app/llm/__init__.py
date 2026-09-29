@@ -1,9 +1,9 @@
 """LLM provider adapter package (gemini | openai | mock)."""
 
 from app.llm.base import (
+    EmbeddingProvider,
     LLMError,
     LLMProvider,
-    EmbeddingProvider,
     drain_llm_calls,
     get_embedding_provider,
     get_llm_provider,

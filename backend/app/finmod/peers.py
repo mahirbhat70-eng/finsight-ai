@@ -88,7 +88,7 @@ def radar_payload(target_metrics: dict[str, float | None],
             continue
         lo, hi = min(values), max(values)  # type: ignore[type-var]
         span = (hi - lo) or 1.0
-        norm = lambda v: (v - lo) / span  # noqa: E731
+        norm = lambda v, lo=lo, span=span: (v - lo) / span  # noqa: E731
         inverted = key == "debt_to_equity"
         axes.append({
             "axis": key,

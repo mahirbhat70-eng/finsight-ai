@@ -13,6 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from app.ingestion.mapper import map_document
 from app.ingestion.parser import parse_pdf
 
+
 def find_fixtures() -> Path:
     """data/fixtures in the merged repo OR inside a phase folder."""
     for parent in [Path(__file__).resolve()] + list(Path(__file__).resolve().parents):
@@ -80,7 +81,7 @@ def test_fcf_from_pdf_and_derived_path(mapped) -> None:
     assert fy24.value < -1000
 
     # Derived path fires when the row is absent from the source
-    from app.ingestion.mapper import MapResult, MappedItem, _derive_missing
+    from app.ingestion.mapper import MappedItem, MapResult, _derive_missing
 
     result = MapResult(items=[
         MappedItem("ocf", "FY2025", 800.0, "INR_cr", 1, "ocf", 1.0, "alias"),

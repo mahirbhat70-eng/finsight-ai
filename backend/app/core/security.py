@@ -59,7 +59,7 @@ def generate_api_key() -> tuple[str, str, str]:
     prefix = uuid.uuid4().hex[:8]
     secret = uuid.uuid4().hex
     full_key = f"fs_{prefix}_{secret}"
-    return full_key, bcrypt.hash(full_key), prefix
+    return full_key, hash_password(full_key), prefix
 
 
 async def _user_from_api_key(db: AsyncSession, raw_key: str) -> User | None:
@@ -71,7 +71,7 @@ async def _user_from_api_key(db: AsyncSession, raw_key: str) -> User | None:
         select(ApiKey).where(ApiKey.prefix == prefix, ApiKey.revoked.is_(False))
     )).scalars().all()
     for key in keys:
-        if bcrypt.verify(raw_key, key.key_hash):
+        if verify_password(raw_key, key.key_hash):
             return await db.get(User, key.user_id)
     return None
 

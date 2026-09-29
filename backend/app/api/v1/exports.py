@@ -16,7 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.logging import get_request_id
 from app.db.session import get_db
 from app.exports.charts import build_all
-from app.exports.excel_model import build_workbook, save_workbook
+from app.exports.excel_model import build_workbook
 from app.finmod.dcf import Forecast
 from app.finmod.engine import run_company
 from app.finmod.wacc import AssumptionSet
